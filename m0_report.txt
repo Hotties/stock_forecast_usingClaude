@@ -1,0 +1,25 @@
+M0 사전 점검 보고서 (2026-10-27)
+요약: CHECK 7  PASS 15
+
+[CHECK] 라이브러리 버전: FinanceDataReader 0.9.202, pandas 3.1.0 → 버전을 기록해 두고 고정
+[PASS ] 종목 목록 조회: 2872행, 컬럼 ['Code', 'ISU_CD', 'Name', 'Market', 'Dept', 'Close', 'ChangeCode', 'Changes', 'ChagesRatio', 'Open', 'High', 'Low', 'Volume', 'Amount', 'Marcap', 'Stocks', 'MarketId', 'lateInfoMsgCd']
+[PASS ] 코드·이름 컬럼: Code, Name
+[PASS ] 시장 컬럼: 값 분포 {'KOSDAQ': 1775, 'KOSPI': 940, 'KONEX': 107, 'KOSDAQ GLOBAL': 50}, 비어 있는 행 0개
+[PASS ] 시가총액 컬럼: Marcap, 값이 있는 행 2872개
+[PASS ] 시드 후보(KOSPI 70 + KOSDAQ 30): KOSPI 70개, KOSDAQ 30개 → m0_seed_candidates.csv 저장
+[CHECK] 우선주 판별(코드 끝자리): 코드가 0으로 끝나지 않는 종목 114개, 예: ['삼성전자우', '현대차2우B', '현대차우', '삼성전기우', '삼성화재우', '미래에셋증권2우B', '두산우', 'LG전자우'] → 우선주 외 종목이 섞였는지 눈으로 확인
+[PASS ] 상장일 조회: 2872행, 컬럼 ['Code', 'Name', 'Market', 'Sector', 'Industry', 'Products', 'ListingDate', 'SettleMonth'], ListingDate 비어 있는 행 114개(우선주 등)
+[PASS ] ETF 목록 조회: 1183행, 컬럼 ['Symbol', 'Category', 'Name', 'Price', 'RiseFall', 'Change', 'ChangeRate', 'NAV']
+[PASS ] 상장폐지 목록 조회: 4211행, 컬럼 ['Symbol', 'Name', 'Market', 'SecuGroup', 'Kind', 'ListingDate', 'DelistingDate', 'Reason']
+[CHECK] 심볼 KS11: 865행, 2023-04-06 ~ 2026-10-27, 컬럼 ['Close', 'UpDown', 'Comp', 'Change', 'Open', 'High', 'Low', 'Volume', 'Amount', 'MarCap']
+[CHECK] 심볼 KQ11: 865행, 2023-04-06 ~ 2026-10-27, 컬럼 ['Close', 'UpDown', 'Comp', 'Change', 'Open', 'High', 'Low', 'Volume', 'Amount', 'MarCap']
+[PASS ] 심볼 US500: 893행, 2023-04-05 ~ 2026-10-26, 컬럼 ['Open', 'High', 'Low', 'Close', 'Volume', 'Adj Close']
+[PASS ] 심볼 IXIC: 893행, 2023-04-05 ~ 2026-10-26, 컬럼 ['Open', 'High', 'Low', 'Close', 'Volume', 'Adj Close']
+[PASS ] 심볼 USD/KRW: 930행, 2023-04-04 ~ 2026-10-27, 컬럼 ['Open', 'High', 'Low', 'Close', 'Volume', 'Adj Close']
+[PASS ] 수정주가(삼성전자 액면분할): 하루 최대 변동 3.5% → 수정주가로 보임 (종가 51,620 → 51,600)
+[CHECK] DataReader 시그니처: (symbol: str, start=None, end=None, exchange=None, data_source=None) -> pandas.DataFrame → 소스를 지정하는 인자가 있으면 문서에서 확인
+[PASS ] 호출 간격 시험: 종목 30개, 간격 0.3초, 성공 30개, 실패 0개 [], 종목당 평균 0.29초, 행 수 최소 865
+[PASS ] 달력 라이브러리: exchange_calendars 4.13.2, 지원 범위 2006-10-27 ~ 2027-10-27
+[CHECK] 한국 휴장일 샘플: 2026-10-09: 휴장; 2026-05-01: 휴장; 2026-12-31: 휴장 → 한글날(10/9)은 휴장이어야 함. 5/1·12/31은 실제 공지와 비교
+[CHECK] 달력 vs KOSPI 지수 날짜: 지수에만 있는 날 0개 [], 달력에만 있는 날 2개 [datetime.date(2026, 6, 3), datetime.date(2026, 7, 17)]
+[PASS ] 미국 날짜 정렬 규칙: 최근 60개 한국 거래일에서 merge_asof 결과와 달력 계산이 일치
